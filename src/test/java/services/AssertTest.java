@@ -1,3 +1,5 @@
+package services;
+
 import br.ce.wcaquino.entidades.Usuario;
 import org.junit.Test;
 

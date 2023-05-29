@@ -1,3 +1,5 @@
+package services;
+
 import br.ce.wcaquino.exceptions.NaoPodeDividirPorZeroException;
 import br.ce.wcaquino.servicos.Calculadora;
 import org.junit.Before;

@@ -1,3 +1,5 @@
+package services;
+
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -5,6 +7,8 @@ import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.servicos.LocacaoService;
 import br.ce.wcaquino.utils.DataUtils;
+import matchers.DiaSemanaMatchers;
+import matchers.MatchersProprios;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
@@ -15,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import static br.ce.wcaquino.utils.DataUtils.*;
+import static matchers.MatchersProprios.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -54,6 +59,8 @@ public class LocacaoServiceTeste {
         error.checkThat(locacao.getValor(), is(equalTo(3.5)));
         error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
         error.checkThat(isMesmaData(locacao.getDataLocacao(), obterDataComDiferencaDias(1)), is(false));
+        error.checkThat(locacao.getDataRetorno(), ehHojeComDiferencaDias(1));
+        error.checkThat(locacao.getDataLocacao(), ehHoje());
     }
 
     @Test(expected = FilmeSemEstoqueException.class)
@@ -130,7 +137,7 @@ public class LocacaoServiceTeste {
         Usuario usuario = new Usuario("usuario 1");
         List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 4.0),
                 new Filme("Filme 2", 2, 4.0), new Filme("Filme 3", 2, 4.0),
-                new Filme("Filme 4", 2, 4.0),new Filme("Filme 5", 2, 4.0) );
+                new Filme("Filme 4", 2, 4.0), new Filme("Filme 5", 2, 4.0));
 
         //acao
         Locacao resultado = service.alugarFilme(usuario, filmes);
@@ -145,7 +152,7 @@ public class LocacaoServiceTeste {
         Usuario usuario = new Usuario("usuario 1");
         List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 4.0),
                 new Filme("Filme 2", 2, 4.0), new Filme("Filme 3", 2, 4.0),
-                new Filme("Filme 4", 2, 4.0),new Filme("Filme 5", 2, 4.0),
+                new Filme("Filme 4", 2, 4.0), new Filme("Filme 5", 2, 4.0),
                 new Filme("Filme 6", 2, 4.0));
 
         //acao
@@ -165,7 +172,9 @@ public class LocacaoServiceTeste {
         Locacao retorno = service.alugarFilme(usuario, filmes);
 
         //verificacao
-        boolean ehSegundo = verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
-        assertTrue(ehSegundo);
+
+        //assertThat(retorno.getDataRetorno(), new DiaSemanaMatchers(Calendar.MONDAY));
+        //assertThat(retorno.getDataRetorno(), MatchersProprios.cairEm(Calendar.MONDAY));
+        assertThat(retorno.getDataRetorno(), caiNumaSegunda());
     }
 }
