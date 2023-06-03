@@ -4,6 +4,7 @@ import br.ce.wcaquino.exceptions.NaoPodeDividirPorZeroException;
 
 public class Calculadora {
     public int somar(int a, int b) {
+        System.out.println("estou executando o metodo somar");
         return a + b;
     }
 
@@ -16,5 +17,9 @@ public class Calculadora {
             throw new NaoPodeDividirPorZeroException("Nao pode dividir por zero");
         }
         return a / b;
+    }
+
+    public void imprime(){
+        System.out.println("passei aqui");
     }
 }
