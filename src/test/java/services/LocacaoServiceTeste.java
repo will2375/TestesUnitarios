@@ -10,14 +10,12 @@ import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.servicos.EmailServices;
 import br.ce.wcaquino.servicos.LocacaoService;
 import br.ce.wcaquino.servicos.SpcService;
+import br.ce.wcaquino.utils.DataUtils;
 import builder.FilmeBuilder;
 import builder.LocacaoBuilder;
 import matchers.DiaSemanaMatchers;
 import matchers.MatchersProprios;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 import org.mockito.*;
@@ -188,6 +186,7 @@ public class LocacaoServiceTeste {
 
     @Test
     public void naoDevolverFilmeNoDomingo() throws FilmeSemEstoqueException, LocadoraException {
+        Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
         //cenario
         Usuario usuario = umUsuario().agora();
         List<Filme> filmes = Arrays.asList(new Filme("filme 1", 1, 5.0));
@@ -198,8 +197,8 @@ public class LocacaoServiceTeste {
         //verificacao
 
         //assertThat(retorno.getDataRetorno(), new DiaSemanaMatchers(Calendar.MONDAY));
-        assertThat(retorno.getDataRetorno(), MatchersProprios.cairEm(Calendar.MONDAY));
-        //assertThat(retorno.getDataRetorno(), caiNumaSegunda());
+//        assertThat(retorno.getDataRetorno(), MatchersProprios.cairEm(Calendar.MONDAY));
+        assertThat(retorno.getDataRetorno(), caiNumaSegunda());
     }
 
     @Test
